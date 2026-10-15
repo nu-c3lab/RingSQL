@@ -58,9 +58,7 @@ Coming soon.
 [//]: # (See the installation and usage instructions in the ```data_generation``` directory.)
 
 #### Training Setup
-Coming soon.
-
-[//]: # (See the installation and usage instructions in the ```training``` directory.)
+See the installation and usage instructions in the ```training``` directory.
 
 ## 📚 Citation
 
