@@ -23,6 +23,8 @@
 </div>
 <br>
 
+**[NEWS]** Our [paper](https://arxiv.org/abs/2601.05451v2) was accepted to EACL Findings 2027! 
+
 ## 📖 Overview
 
 Recent advances in text-to-SQL have been driven by larger models, better datasets, and new training methods like RLVR. However, progress remains limited by scarce high-quality training data, a problem RLVR is especially sensitive to since noisy data can produce spurious rewards. Manual data creation is expensive, and existing synthetic methods trade off reliability for scalability: template-based approaches guarantee correct SQL but need schema-specific templates and lack diversity, while LLM-based generation scales easily but lacks quality guarantees. We introduce RingSQL, a hybrid framework for generating question-SQL pairs that combines schema-independent query templates with LLM-based paraphrasing of natural language questions. By grounding question generation in complete template questions, RingSQL preserves question-query correctness across all levels of query complexity, a property purely LLM-based methods fail to maintain. RingSQL also produces the only synthetic dataset that improves RLVR training performance across all tested model architectures and benchmarks, achieving 69.8% average accuracy and surpassing both the next-best synthetic dataset by 2.1% and human-annotated data from Spider and BIRD.
@@ -47,15 +49,11 @@ You can find the weights for models trained on data produced by RingSQL on Huggi
 
 ### Installation
 
-#### Satyrn Setup
-Coming soon.
-
-[//]: # (See the installation and usage instructions in the ```satyrn``` directory.)
+#### Satyrn Setup *(Required for Data Generation)*
+See the installation and usage instructions in the ```satyrn``` directory.
 
 #### Data Generation Setup
-Coming soon.
-
-[//]: # (See the installation and usage instructions in the ```data_generation``` directory.)
+See the installation and usage instructions in the ```data_generation``` directory.
 
 #### Training Setup
 See the installation and usage instructions in the ```training``` directory.
