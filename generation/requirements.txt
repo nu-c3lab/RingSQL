@@ -1,0 +1,11 @@
+tqdm
+wasabi
+openai
+sentence_transformers
+# for rephrasing data from parquet files for ablations
+pyarrow
+# fastparquet
+requests
+sqlglot
+numpy
+matplotlib
