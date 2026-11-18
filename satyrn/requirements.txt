@@ -1,0 +1,36 @@
+bcrypt
+Flask==1.1.2
+Flask-Caching
+Flask-Migrate
+Flask-Security-Too==3.4.5
+Flask-SQLAlchemy
+flask_cors
+geoalchemy2
+IPython
+pandas
+requests
+psycopg2
+SQLAlchemy
+# torch
+openai
+# sentence_transformers
+networkx
+chromadb
+tiktoken
+matplotlib
+# transformers
+prettytable
+pyhive
+pyspark
+thrift
+pyarrow~=14.0
+grpcio_status==1.64.1
+cachetools
+Jinja2<3.1
+itsdangerous<2.0
+Werkzeug<2.0
+MarkupSafe<2.1
+numpy<2
+torch==2.2.2
+sentence-transformers==5.4.1
+transformers>=4.41,<5

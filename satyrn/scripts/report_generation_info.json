@@ -1,0 +1,389 @@
+{
+    "environmental_sustainability": {
+        "entities": {
+            "Wildfire": {
+                "entity_name": "Wildfire",
+                "entity_instance_identifier_attribute_name": "id",
+                "entity_instance_identifier_values": ["2056705", "17", "4158", "19581", "1473955"],
+                "metrics": [
+                    {
+                        "metric_entity_name": "Wildfire",
+                        "metric_attribute_name": "fire_size",
+                        "metric_aggregation": "",
+                        "metric_sort_direction" :["desc","asc"],
+                        "metric_preference_direction": "+inf",
+                        "benchmark_target": [50, 100, 300, 1000, 15000],
+                        "time_attribute": "year",
+                        "time_zero_one": [[2000, 2010], [1995, 2000], [2010, 2015], [2000, 2015], [1995, 2015]]
+                    }
+                ],
+                "metric_set_filters": [
+                    {},
+                    {
+                        "|1|": "(retrieve_entity Wildfire)",
+                        "|2|": "(retrieve_attribute |1| fire_size)",
+                        "|3|": "(greaterthan_eq |2| 30)"
+                    }
+                ]
+            },
+            "State": {
+                "entity_name": "State",
+                "entity_instance_identifier_attribute_name": "name",
+                "entity_instance_identifier_values": ["Idaho", "Illinois", "California", "Oregon", "Georgia"],
+                "metrics": [
+                    {
+                        "metric_entity_name": "Wildfire",
+                        "metric_attribute_name": "fire_size",
+                        "metric_aggregation": "average",
+                        "metric_sort_direction": ["desc", "asc"],
+                        "metric_preference_direction": "-inf",
+                        "benchmark_target": [30, 70, 200, 300, 500],
+                        "time_attribute": "year",
+                        "time_zero_one": [[1996, 1997], [1999, 2009], [2000, 2010], [1995, 2010], [2001, 2011]]
+                    },
+                    {
+                        "metric_entity_name": "Wildfire",
+                        "metric_attribute_name": "fire_size",
+                        "metric_aggregation": "count_unique",
+                        "metric_sort_direction" : ["desc", "asc"],
+                        "metric_preference_direction": "+inf",
+                        "benchmark_target": [0, 10, 50, 1000, 2000],
+                        "time_attribute": "year",
+                        "time_zero_one": [[2000, 2010], [2003, 2013], [2002, 2017], [1997, 2007], [1995, 2005]]
+                    },
+                    {
+                        "metric_entity_name": "Wildfire",
+                        "metric_attribute_name": "fire_size",
+                        "metric_aggregation": "median",
+                        "metric_sort_direction" :["desc","asc"],
+                        "metric_preference_direction": "+inf",
+                        "benchmark_target": [10, 20, 50, 120, 170],
+                        "time_attribute": "year",
+                        "time_zero_one": [[2001, 2011], [1998, 2008], [1998, 2003], [2003, 2008], [2010, 1016]]
+                    }
+                ],
+                "metric_set_filters": [
+                    {},
+                    {
+                        "|1|": "(retrieve_entity Wildfire)",
+                        "|2|": "(retrieve_attribute |1| fire_size)",
+                        "|3|": "(greaterthan_eq |2| 50)"
+                    }
+                ]
+            }
+        }
+    },
+    "healthcare": {
+        "entities": {
+            "Subject": {
+                "entity_name": "Subject",
+                "entity_instance_identifier_attribute_name": "id",
+                "entity_instance_identifier_values": ["10000032"],
+                "metrics": [
+                    {
+                        "metric_entity_name": "EDstay",
+                        "metric_attribute_name": "id",
+                        "metric_aggregation": "count_unique",
+                        "metric_sort_direction" :["desc","asc"],
+                        "metric_preference_direction": "-inf",
+                        "benchmark_target": [0, 1, 5, 10, 20],
+                        "time_attribute": "intime:year",
+                        "time_zero_one": [["2145", "2147"]]
+                    }
+                ],
+                "metric_set_filters": [
+                    {
+                        "|1|": "(retrieve_entity Subject)",
+                        "|2|": "(retrieve_attribute |1| gender)",
+                        "|3|": "(exact |2| \"F\")"
+                    },
+                    {
+                        "|1|": "(retrieve_entity Subject)",
+                        "|2|": "(retrieve_attribute |1| gender)",
+                        "|3|": "(exact |2| \"M\")"
+                    }
+                ]
+            }
+        }
+    },
+    "criminal_justice": {
+        "entities": {
+            "Incident": {
+                "entity_name": "Incident",
+                "entity_instance_identifier_attribute_name": "incident_id",
+                "entity_instance_identifier_values": ["20220531LAMON", "20220331SCTAG", "20171207NMAZA" ,"20180123KYMAB", "19871031SCANA"],
+
+                "metrics": [
+                    {
+                        "metric_entity_name": "Victim",
+                        "metric_attribute_name": "id",
+                        "metric_aggregation": "count_unique",
+                        "metric_sort_direction" : ["desc","asc"],
+                        "metric_preference_direction": "-inf",
+                        "benchmark_target": [100, 50, 25, 10, 5, 0],
+                        "time_attribute": null,
+                        "time_zero_one": []
+                    }
+                ],
+
+                "metric_set_filters": [
+                  {
+                      "|1|": "(retrieve_entity Incident)",
+                      "|2|": "(retrieve_attribute |1| school_level)",
+                      "|3|": "(exact |2| \"High\")"
+                  },
+                  {
+                      "|1|": "(retrieve_entity Incident)",
+                      "|2|": "(retrieve_attribute |1| media_attention)",
+                      "|3|": "(exact |2| \"National\")"
+                  },
+                  {
+                      "|1|": "(retrieve_entity Incident)",
+                      "|2|": "(retrieve_attribute |1| during_school)",
+                      "|3|": "(exact |2| \"Yes\")"
+                  }
+
+                ]
+            }
+        }
+    },
+    "business": {
+        "entities": {
+            "Business": {
+                "entity_name": "Business",
+                "entity_instance_identifier_attribute_name": "business_id",
+                "entity_instance_identifier_values": ["PbxGUBMCnQydOwAu4FAzNA", "04UD14gamNjLY0IDYVhHJg", "UJsufbvfyfONHeWdvAHKjA", "qhDdDeI3K4jy2KyzwFN53w","seKihQKpGGnCeLuELRQPSQ"],
+
+                "metrics": [
+                    {
+                        "metric_entity_name": "Review",
+                        "metric_attribute_name": "stars",
+                        "metric_aggregation": "average",
+                        "metric_sort_direction" : ["desc","asc"],
+                        "metric_preference_direction": "+inf",
+                        "benchmark_target": [4, 4.5, 5],
+                        "time_attribute": "date_posted:year",
+                        "time_zero_one": [[2017, 2018], [2019, 2020]]
+                    }
+                ],
+
+                "metric_set_filters": [
+                  {},
+                  {
+                      "|1|": "(retrieve_entity User)",
+                      "|2|": "(retrieve_attribute |1| review_count)",
+                      "|3|": "(greaterthan_eq |2| 10)"
+                  }
+                ]
+            }
+        }
+    },
+    "urban_housing": {
+        "entities": {
+            "Region": {
+                "entity_name": "Region",
+                "entity_instance_identifier_attribute_name": "region_id",
+                "entity_instance_identifier_values": ["394463", "753899", "395048", "394998", "394703"],
+
+                "metrics": [
+                    {
+                        "metric_entity_name": "RentRate",
+                        "metric_attribute_name": "average_rent",
+                        "metric_aggregation": "max",
+                        "metric_sort_direction": ["desc","asc"],
+                        "metric_preference_direction": "-inf",
+                        "benchmark_target": [500, 750, 1000, 1250, 1500],
+                        "time_attribute": "date:year",
+                        "time_zero_one": [["2015", "2017"],["2018", "2020"]]
+                    }
+                ],
+
+                "metric_set_filters": [
+                    {},
+                    {
+                        "|1|": "(retrieve_entity Region)",
+                        "|2|": "(retrieve_attribute |1| size_rank)",
+                        "|3|": "(lessthan_eq |2| 50)",
+                        "|4|": "(exact |2| 0)",
+                        "|5|": "(not |4|)",
+                        "|6|": "(and |5| |3|)"
+                    }
+                ]
+            }
+        }
+    },
+    "education": {
+        "entities": {
+            "School": {
+                "entity_name": "School",
+                "entity_instance_identifier_attribute_name": "rcdts",
+                "entity_instance_identifier_values": ["040041000260002", "010011720220003", "010050010260001", "010090150260007", "010691170220014"],
+
+                "metrics": [
+                    {
+                        "metric_entity_name": "School",
+                        "metric_attribute_name": "student_enrollment",
+                        "metric_aggregation": "",
+                        "metric_sort_direction" : ["desc","asc"],
+                        "metric_preference_direction": "+inf",
+                        "benchmark_target": [50, 100, 200, 500, 1000],
+                        "time_attribute": null,
+                        "time_zero_one": []
+                    },
+                    {
+                        "metric_entity_name": "School",
+                        "metric_attribute_name": "highschool_dropout_rate",
+                        "metric_aggregation": "",
+                        "metric_sort_direction" : ["desc","asc"],
+                        "metric_preference_direction": "-inf",
+                        "benchmark_target": [1, 3, 5, 7, 10],
+                        "time_attribute": null,
+                        "time_zero_one": []
+                    },
+
+                    {
+                        "metric_entity_name": "School",
+                        "metric_attribute_name": "highschool_average_class_size",
+                        "metric_aggregation": "",
+                        "metric_sort_direction" : ["desc","asc"],
+                        "metric_preference_direction": "-inf",
+                        "benchmark_target": [10, 20, 30, 40, 50],
+                        "time_attribute": null,
+                        "time_zero_one": []
+                    }
+
+                ],
+
+                "metric_set_filters": [
+
+                  {
+                      "|1|": "(retrieve_entity School)",
+                      "|2|": "(retrieve_attribute |1| highschool_dropout_rate)",
+                      "|3|": "(lessthan_eq |2| 4 )"
+                  },
+                  {
+                      "|1|": "(retrieve_entity School)",
+                      "|2|": "(retrieve_attribute |1| student_attendance_rate)",
+                      "|3|": "(greaterthan_eq |2| 70)"
+                  }
+                ]
+            },
+            "District" :{
+              "entity_name": "District",
+              "entity_instance_identifier_attribute_name": "rcdts",
+              "entity_instance_identifier_values": ["010010010260000", "010011720220000", "030030020260000", "030250400260000", "030262020260000"],
+
+              "metrics": [
+                {
+                  "metric_entity_name": "District",
+                  "metric_attribute_name": "student_enrollment",
+                  "metric_aggregation": "",
+                  "metric_sort_direction" : ["desc","asc"],
+                  "metric_preference_direction": "+inf",
+                  "benchmark_target": [50, 100, 200, 500, 1000],
+                  "time_attribute": null,
+                  "time_zero_one": []
+                },
+                {
+                  "metric_entity_name": "District",
+                  "metric_attribute_name": "highschool_dropout_rate",
+                  "metric_aggregation": "",
+                  "metric_sort_direction" : ["desc","asc"],
+                  "metric_preference_direction": "-inf",
+                  "benchmark_target": [1, 3, 5, 7, 10],
+                  "time_attribute": null,
+                  "time_zero_one": []
+                },
+                {
+                  "metric_entity_name": "District",
+                   "metric_attribute_name": "highschool_average_class_size",
+                   "metric_aggregation": "",
+                   "metric_sort_direction" : ["desc","asc"],
+                   "metric_preference_direction": "-inf",
+                   "benchmark_target": [10, 20, 30, 40, 50],
+                   "time_attribute": null,
+                   "time_zero_one": []
+                }
+              ],
+              "metric_set_filters" :[
+                {
+                  "|1|": "(retrieve_entity District)",
+                  "|2|": "(retrieve_attribute |1| highschool_dropout_rate)",
+                  "|3|": "(lessthan_eq |2| 4 )"
+                },
+                {
+                  "|1|": "(retrieve_entity District)",
+                  "|2|": "(retrieve_attribute |1| student_attendance_rate)",
+                  "|3|": "(greaterthan_eq |2| 70)"
+                },
+                {
+                  "|1|": "(retrieve_entity District)",
+                 "|2|": "(retrieve_attribute |1| teacher_evaluation_rate)",
+                 "|3|": "(greaterthan_eq |2| 90)"
+                }
+              ]
+            }
+      }
+    },
+    "socioeconomics": {
+        "entities": {
+
+
+        }
+    },
+    "legal_and_judicial": {
+        "entities": {
+            "Case": {
+                "entity_name": "Case",
+                "entity_instance_identifier_attribute_name": "ucid",
+                "entity_instance_identifier_values": ["dcd;;1:14-cv-01674", "dcd;;1:16-cv-02213", "dcd;;1:16-cv-00828", "dcd;;1:16-cv-01959"],
+
+                "metrics": [
+                    {
+                        "metric_entity_name": "Case",
+                        "metric_attribute_name": "case_duration",
+                        "metric_aggregation": "",
+                        "metric_sort_direction" :["desc", "asc"],
+                        "metric_preference_direction": "-inf",
+                        "benchmark_target": [7, 14, 60, 120, 365],
+                        "time_attribute": null,
+                        "time_zero_one": []
+                    }
+                ],
+
+                "metric_set_filters": [{}]
+            },
+            "Judge" : {
+              "entity_name": "Judge",
+              "entity_instance_identifier_attribute_name" : "sjid",
+              "entity_instance_identifier_values" : ["SJ001039", "SJ000652", "SJ000409", "SJ001790", "SJ000924"],
+              "metrics" :[
+                {
+                  "metric_entity_name": "Judge",
+                  "metric_attribute_name": "tot_ucid",
+                  "metric_aggregation": "",
+                  "metric_sort_direction" :["desc", "asc"],
+                  "metric_preference_direction": "+inf",
+                  "benchmark_target": [50, 100, 250, 550, 700],
+                  "time_attribute": null,
+                  "time_zero_one": []
+                },
+
+                {
+                  "metric_entity_name": "Case",
+                  "metric_attribute_name": "ucid",
+                  "metric_aggregation": "count_unique",
+                  "metric_sort_direction" :["desc", "asc"],
+                  "metric_preference_direction": "+inf",
+                  "benchmark_target": [50, 100, 250, 550, 700],
+                  "time_attribute": "year",
+                  "time_zero_one": [[2002,2010],[2010,2016],[2017,2020],[2020,2022]]
+                }
+
+              ],
+              "metric_set_filters" : [{}]
+            }
+
+        }
+    }
+}

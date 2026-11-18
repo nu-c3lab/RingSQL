@@ -1,0 +1,446 @@
+{
+  "BasePlans": {
+    "TopThreeForMetric": {
+      "input": {
+        "|A|": {
+          "attribute_type": [
+            "Metric"
+          ],
+          "associated_slots": [
+            "{Metric[0]}",
+            "{Identifier[0]}"
+          ],
+          "filter": {},
+          "symmetric_filter_with": []
+        }
+      },
+      "analysis_template": {
+        "|1|": "(retrieve_attribute |A| {Identifier[0]})",
+        "|2|": "(retrieve_attribute |A| {Metric[0]})",
+        "|3|": "(sort |2| desc)",
+        "|4|": "(limit {Quantity[0]})",
+        "|5|": "(collect |1| |2|)",
+        "|6|": "(return |5| |3| |4|)"
+      },
+      "description": "Get the top N entity instances of an entity subclass ranked by their comparative metrics.",
+      "statement_templates": [
+        "The top {Quantity[0]} are <repeat>{Result[0]} ({Result[1]} {Result[1].Unit})</repeat>."
+      ],
+      "question_templates": [
+        "What are the top {Quantity[0]} {EntityClass[A].Expression} ranked by {Metric[0].Expression} {Filter[A].Expression} in descending order?",
+        "What are the top {Quantity[0]} {EntityClass[A].Expression} ranked by {Metric[0].Expression} {Filter[A].Expression} from largest to smallest?",
+        "When ranked by {Metric[0].Expression} {Filter[A].Expression} from largest to smallest, what are the top {Quantity[0]} {EntityClass[A].Expression}?",
+        "Tell me the top {Quantity[0]} {EntityClass[A].Expression} when ranking them by {Metric[0].Expression} {Filter[A].Expression} from largest to smallest."
+      ],
+      "general_question_templates": [
+        "What are the top {EntityClass[A].Expression} ranked by {Metric[0].Expression}?"
+      ]
+    },
+    "GeneralSetOp": {
+      "input": {
+        "|A|": {
+          "attribute_type": [
+            "Attribute"
+          ],
+          "associated_slots": [
+            "{Attribute[0]}"
+          ],
+          "filter": {},
+          "symmetric_filter_with": [],
+          "require_filter": false,
+          "filter_ents": [
+            "{RelatedEntityClass[A]}"
+          ]
+        },
+        "|B|": {
+          "attribute_type": [
+            "Attribute"
+          ],
+          "associated_slots": [
+            "{Attribute[0]}"
+          ],
+          "filter": {},
+          "symmetric_filter_with": [],
+          "require_filter": true,
+          "filter_ents": [
+            "{RelatedEntityClass[A]}"
+          ]
+        }
+      },
+      "analysis_template": {
+        "|1|": "({SetOp[0]} |A| |B|)"
+      },
+      "analysis_template_old": {
+        "|1|": "(retrieve_attribute |A| {Attribute[0]})",
+        "|2|": "(collect |1|)",
+        "|3|": "(return |2|)",
+        "|4|": "(retrieve_attribute |B| {Attribute[0]})",
+        "|5|": "(collect |4|)",
+        "|6|": "(return |5|)",
+        "|7|": "({SetOp[0]} |3| |6|)"
+      },
+      "sample_config": {
+        "{Attribute[0]}": {
+          "dist": "uniform",
+          "min": 2,
+          "max": 5
+        }
+      },
+      "related_ent_constraints": {
+        "{RelatedEntityClass[A]}": "m2o|m2m"
+      },
+      "description": "Return the result of a set operation on the same attributes with different filters.",
+      "statement_templates": [
+        ""
+      ],
+      "question_templates": [
+        "What are the {Attribute[0].Expression} for {EntityClass[A].Expression} {Filter[A].Expression} {SetOp[0].Expression} {Filter[B].Expression}?"
+      ],
+      "general_question_templates": [
+        ""
+      ]
+    },
+    "RetrievalPlan": {
+      "input": {
+        "|A|": {
+          "attribute_type": [
+            "Attribute"
+          ],
+          "associated_slots": [
+            "{Attribute[0]}"
+          ],
+          "filter": {},
+          "symmetric_filter_with": [],
+          "require_filter": true,
+          "filter_ents": []
+        }
+      },
+      "analysis_template": {},
+      "analysis_template_extra_steps": {
+        "|1|": "(retrieve_attribute |A| {Attribute[0]})",
+        "|2|": "(collect |1|)",
+        "|3|": "(return |2|)"
+      },
+      "sample_config": {
+        "{Attribute[0]}": {
+          "dist": "uniform",
+          "min": 2,
+          "max": 5
+        }
+      },
+      "related_ent_constraints": {},
+      "description": "Return randomly sampled attributes from an entity.",
+      "statement_templates": [
+        ""
+      ],
+      "question_templates": [
+        "What are the {Attribute[0].Expression} for {EntityClass[A].Expression} {Filter[A].Expression}?"
+      ],
+      "general_question_templates": [
+        ""
+      ]
+    },
+    "JoinPlan": {
+      "input": {
+        "|A|": {
+          "attribute_type": [
+            "Attribute"
+          ],
+          "associated_slots": [
+            "{Attribute[0]}"
+          ],
+          "filter": {},
+          "symmetric_filter_with": [],
+          "require_filter": false,
+          "filter_ents": []
+        },
+        "|B|": {
+          "attribute_type": [
+            "Attribute"
+          ],
+          "associated_slots": [
+            "{Attribute[1]}"
+          ],
+          "base_entity": "{RelatedEntity[0]}",
+          "filter": {},
+          "symmetric_filter_with": [],
+          "require_filter": false,
+          "filter_ents": []
+        }
+      },
+      "analysis_template": {
+        "|1|": "(retrieve_attribute |A| {Attribute[0]})",
+        "|2|": "(retrieve_attribute |B| {Attribute[1]})",
+        "|3|": "(collect |1| |2|)",
+        "|4|": "(return |3|)"
+      },
+      "sample_config": {
+        "{Attribute[0]}": {
+          "dist": "uniform",
+          "min": 2,
+          "max": 5
+        },
+        "{Attribute[1]}": {
+          "dist": "uniform",
+          "min": 2,
+          "max": 5
+        }
+      },
+      "related_ent_constraints": {},
+      "description": "Calculate the raw change of an entity's metric between two time periods.",
+      "statement_templates": [
+        "The {Attribute[0].Expression} for {EntityClass[A].Expression} {Filter[A].Expression}."
+      ],
+      "question_templates": [
+        "What are the {Attribute[0].Expression} for {EntityClass[A].Expression} {Filter[A].Expression}?"
+      ],
+      "general_question_templates": [
+        ""
+      ]
+    },
+    "DidInstanceOccurAfterOtherInstance": {
+      "input": {
+        "|A|": {
+          "attribute_type": [
+            "Datetime"
+          ],
+          "associated_slots": [
+            "{Datetime[0]}"
+          ],
+          "filter": {
+            "|1|": "(retrieve_entity {EntityClass[A]})",
+            "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+            "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+          },
+          "symmetric_filter_with": []
+        },
+        "|B|": {
+          "attribute_type": [
+            "Datetime"
+          ],
+          "associated_slots": [
+            "{Datetime[0]}"
+          ],
+          "filter": {
+            "|1|": "(retrieve_entity {EntityClass[B]})",
+            "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+            "|3|": "(exact |2| \"{Identifier[0].Value[1]}\")"
+          },
+          "symmetric_filter_with": []
+        }
+      },
+      "analysis_template": {
+        "|1|": "(retrieve_attribute |A| {Datetime[0]})",
+        "|2|": "(retrieve_attribute |B| {Datetime[0]})",
+        "|3|": "(greaterthan |1| |2|)",
+        "|4|": "(collect |3|)",
+        "|5|": "(return |4|)"
+      },
+      "description": "",
+      "statement_templates": [
+        "It {Result[0]} true that {Identifier[0].Value[0].Expression} {Filter[A].Expression} occurred after {Identifier[0].Value[1].Expression} {Filter[B].Expression}."
+      ],
+      "question_templates": [
+        "Is the {Datetime[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} after the {Datetime[0].Expression} for {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+        "Did {Identifier[0].Value[0].Expression} {Filter[A].Expression} occur after {Identifier[0].Value[1].Expression} {Filter[B].Expression}?"
+      ],
+      "general_question_templates": [
+        "Did one {EntityClass[A]} occur after a different {EntityClass[A}}?"
+      ]
+    }
+  },
+  "FilterSubPlansTest": {},
+  "FilterSubPlans": {
+    "AggregatedMetric": {
+      "sample_proportion": 0.3,
+      "filter_attr_types": [
+        "Metric"
+      ],
+      "filter_attrs": [
+        "{Metric[0]}"
+      ],
+      "subquery_old": {
+        "|1|": "(retrieve_entity {parent_ent})",
+        "|2|": "(retrieve_attribute |1| {Metric[0]})",
+        "|3|": "(collect |2|)",
+        "|4|": "(return |3|)"
+      },
+      "analysis_template_old": {
+        "|1|": "(retrieve_attribute |subquery| {Metric[0]})",
+        "|2|": "({Analysis[0]} |1|)",
+        "|3|": "(retrieve_entity {parent_ent})",
+        "|4|": "(retrieve_attribute |3| {Metric[0]})",
+        "|5|": "({NumericComparison[0]} |4| |2|)"
+      },
+      "subquery": {
+        "|1|": "(retrieve_entity {parent_ent})",
+        "|2|": "(retrieve_attribute |1| {Metric[0]})",
+        "|3|": "({Analysis[0]} |2|)",
+        "|4|": "(collect |3|)",
+        "|5|": "(return |4|)"
+      },
+      "analysis_template": {
+        "|1|": "(retrieve_attribute |subquery| |3|subquery||)",
+        "|2|": "(retrieve_entity {parent_ent})",
+        "|3|": "(retrieve_attribute |2| {Metric[0]})",
+        "|4|": "({NumericComparison[0]} |3| |1|)"
+      },
+      "description": "Filter on metric value compared to an aggregate of the same metric.",
+      "statement_templates": [
+        ""
+      ],
+      "question_templates": [
+        "{Metric[0].Expression} {NumericComparison[0].Expression} the {Analysis[0].Expression} of {Metric[0].Expression} {Filter[subquery].Expression}"
+      ],
+      "general_question_templates": [
+        ""
+      ]
+    },
+    "In": {
+      "sample_proportion": 0.05,
+      "filter_attr_types": [
+        "Attribute",
+        "RelatedAttribute"
+      ],
+      "filter_attrs": [
+        "{Attribute[0]}",
+        "{RelatedAttribute[0]}"
+      ],
+      "subquery": {
+        "|1|": "(retrieve_entity {RelatedEntity[0]})",
+        "|2|": "(retrieve_attribute |1| {RelatedAttribute[0]})",
+        "|3|": "(collect |2|)",
+        "|4|": "(return |3|)"
+      },
+      "analysis_template": {
+        "|1|": "(retrieve_entity {parent_ent})",
+        "|2|": "(retrieve_attribute |1| {Attribute[0]})",
+        "|3|": "(in |2| |subquery|)"
+      },
+      "analysis_template_old": {
+        "|1|": "(retrieve_attribute |subquery| {RelatedAttribute[0]})",
+        "|2|": "(retrieve_entity {parent_ent})",
+        "|3|": "(retrieve_attribute |2| {Attribute[0]})",
+        "|4|": "(in |3| |1|)"
+      },
+      "description": "",
+      "statement_templates": [
+        ""
+      ],
+      "question_templates": [
+        "{Attribute[0].Expression} in the {RelatedAttribute[0].Expression} for {RelatedEntity[0].Expression} {Filter[subquery].Expression}"
+      ],
+      "general_question_templates": [
+        "Is the {Metric[0].Expression} for a {EntityClass[A].Expression} higher than {Reference[2].Expression}?"
+      ]
+    },
+    "NotIn": {
+      "sample_proportion": 0.25,
+      "filter_attr_types": [
+        "Attribute",
+        "RelatedAttribute"
+      ],
+      "filter_attrs": [
+        "{Attribute[0]}",
+        "{RelatedAttribute[0]}"
+      ],
+      "subquery": {
+        "|1|": "(retrieve_entity {RelatedEntity[0]})",
+        "|2|": "(retrieve_attribute |1| {RelatedAttribute[0]})",
+        "|3|": "(collect |2|)",
+        "|4|": "(return |3|)"
+      },
+      "analysis_template": {
+        "|1|": "(retrieve_entity {parent_ent})",
+        "|2|": "(retrieve_attribute |1| {Attribute[0]})",
+        "|3|": "(in |2| |subquery|)",
+        "|4|": "(not |3|)"
+      },
+      "description": "",
+      "statement_templates": [
+        ""
+      ],
+      "question_templates": [
+        "{Attribute[0].Expression} not in the {RelatedAttribute[0].Expression} for {RelatedEntity[0].Expression} {Filter[subquery].Expression}"
+      ],
+      "general_question_templates": [
+        "Is the {Metric[0].Expression} for a {EntityClass[A].Expression} higher than {Reference[2].Expression}?"
+      ]
+    },
+    "CategoryOrderedByAggregatedMetric": {
+      "sample_proportion": 0.1,
+      "filter_attr_types": [
+        "Categorical",
+        "Metric"
+      ],
+      "filter_attrs": [
+        "{Categorical[0]}",
+        "{Metric[0]}"
+      ],
+      "subquery": {
+        "|1|": "(retrieve_entity {parent_ent})",
+        "|2|": "(retrieve_attribute |1| {Categorical[0]})",
+        "|3|": "(retrieve_attribute |1| {Metric[0]})",
+        "|4|": "(groupby |2|)",
+        "|5|": "({Analysis[0]} |3| |4|)",
+        "|6|": "(sort |5| {Direction[0]})",
+        "|7|": "(limit 1)",
+        "|8|": "(collect |2|)",
+        "|9|": "(return |8| |6| |7|)"
+      },
+      "analysis_template": {
+        "|1|": "(retrieve_attribute |subquery| {Categorical[0]})",
+        "|2|": "(retrieve_entity {parent_ent})",
+        "|3|": "(retrieve_attribute |2| {Categorical[0]})",
+        "|4|": "(exact |3| |1|)"
+      },
+      "description": "",
+      "statement_templates": [
+        ""
+      ],
+      "question_templates": [
+        "the {Categorical[0].Expression} with the {Direction[0].Expression} {Analysis[0].Expression} of {Metric[0].Expression} {Filter[subquery].Expression}"
+      ],
+      "general_question_templates": [
+        ""
+      ]
+    },
+    "CategoryOrderedByCountAll": {
+      "sample_proportion": 0.3,
+      "filter_attr_types": [
+        "Categorical",
+        "Metric"
+      ],
+      "filter_attrs": [
+        "{Categorical[0]}"
+      ],
+      "subquery": {
+        "|1|": "(retrieve_entity {parent_ent})",
+        "|2|": "(retrieve_attribute |1| {Categorical[0]})",
+        "|3|": "(retrieve_attribute |1| {Categorical[0]})",
+        "|4|": "(groupby |2|)",
+        "|5|": "(count_all |3| |4|)",
+        "|6|": "(sort |5| {Direction[0]})",
+        "|7|": "(limit 1)",
+        "|8|": "(collect |2|)",
+        "|9|": "(return |8| |6| |7|)"
+      },
+      "analysis_template": {
+        "|1|": "(retrieve_attribute |subquery| {Categorical[0]})",
+        "|2|": "(retrieve_entity {parent_ent})",
+        "|3|": "(retrieve_attribute |2| {Categorical[0]})",
+        "|4|": "(exact |3| |1|)"
+      },
+      "description": "",
+      "statement_templates": [
+        ""
+      ],
+      "question_templates": [
+        "the {Direction[0].Expression} {Categorical[0].Expression} {Filter[subquery].Expression}"
+      ],
+      "general_question_templates": [
+        ""
+      ]
+    }
+  }
+}

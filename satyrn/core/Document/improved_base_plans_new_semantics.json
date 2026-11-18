@@ -1,0 +1,1477 @@
+{
+    "TopThreeForMetric": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Identifier[0]})",
+            "|2|": "(retrieve_attribute |A| {Metric[0]})",
+            "|3|": "(sort |2| desc)",
+            "|4|": "(limit {Quantity[0]})",
+            "|5|": "(collect |1| |2|)",
+            "|6|": "(return |5| |3| |4|)"
+        },
+        "description": "Get the top N entity instances of an entity subclass ranked by their comparative metrics.",
+        "statement_templates": [
+            "The top {Quantity[0]} are <repeat>{Result[0]} ({Result[1]} {Result[1].Unit})</repeat>."
+        ],
+        "question_templates": [
+            "What are the top {Quantity[0]} {EntityClass[A].Expression} ranked by {Metric[0].Expression} {Filter[A].Expression} in descending order?",
+            "What are the top {Quantity[0]} {EntityClass[A].Expression} ranked by {Metric[0].Expression} {Filter[A].Expression} from largest to smallest?",
+            "When ranked by {Metric[0].Expression} {Filter[A].Expression} from largest to smallest, what are the top {Quantity[0]} {EntityClass[A].Expression}?",
+            "Tell me the top {Quantity[0]} {EntityClass[A].Expression} when ranking them by {Metric[0].Expression} {Filter[A].Expression} from largest to smallest."
+        ],
+        "general_question_templates": [
+            "What are the top {EntityClass[A].Expression} ranked by {Metric[0].Expression}?"
+        ]
+    },
+    "BottomThreeForMetric": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Identifier[0]})",
+            "|2|": "(retrieve_attribute |A| {Metric[0]})",
+            "|3|": "(sort |2| asc)",
+            "|4|": "(limit {Quantity[0]})",
+            "|5|": "(collect |1| |2|)",
+            "|6|": "(return |5| |3| |4|)"
+        },
+        "description": "Get the bottom N entity instances of an entity subclass ranked by their comparative metrics.",
+        "statement_templates": [
+            "The bottom {Quantity[0]} are <repeat>{Result[0]} ({Result[1]} {Result[1].Unit})</repeat>."
+        ],
+        "question_templates": [
+            "What are the bottom {Quantity[0]} {EntityClass[A].Expression} ranked by {Metric[0].Expression} {Filter[A].Expression} in ascending order?",
+            "What are the bottom {Quantity[0]} {EntityClass[A].Expression} ranked by {Metric[0].Expression} {Filter[A].Expression} from smallest to largest?",
+            "When ranked by {Metric[0].Expression} {Filter[A].Expression} from smallest to largest, what are the bottom {Quantity[0]} {EntityClass[A].Expression}?",
+            "Tell me the bottom {Quantity[0]} {EntityClass[A].Expression} when ranking them by {Metric[0].Expression} {Filter[A].Expression} from smallest to largest."
+        ],
+        "general_question_templates": [
+            "What are the top {EntityClass[A].Expression} ranked by {Metric[0].Expression}?"
+        ]
+    },
+    "InstanceRank": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Identifier[0]})",
+            "|2|": "(retrieve_attribute |A| {Metric[0]})",
+            "|3|": "(sort |2| {Direction[0]})",
+            "|4|": "(rownum |3|)",
+            "|5|": "(collect |4| |1|)",
+            "|6|": "(return |5|)",
+            "|7|": "(retrieve_attribute |6| |4|)",
+            "|8|": "(retrieve_attribute |6| |1|)",
+            "|9|": "(exact |8| \"{Identifier[0].Value[0]}\")",
+            "|10|": "(collect |7| |8|)",
+            "|11|": "(return |10| |9|)"
+        },
+        "description": "Compute the rank of a single entity instance within an entity class based on the comparative metrics.",
+        "statement_templates": [
+            "{Identifier[0].Value[0].Expression} is ranked {Result[0]} according to {Metric[0].Expression}."
+        ],
+        "question_templates": [
+            "How does {Identifier[0].Value[0].Expression} rank according to {Metric[0].Expression} when sorted in {Direction[0].Expression} order {Filter[A].Expression}?",
+            "According to {Metric[0].Expression}, how does {Identifier[0].Value[0].Expression} rank when sorted in {Direction[0].Expression} order {Filter[A].Expression}?",
+            "When ranking by {Metric[0].Expression} sorted in {Direction[0].Expression} order {Filter[A].Expression}, how does {Identifier[0].Value[0].Expression} do?",
+            "Show me how {Identifier[0].Value[0].Expression} ranks according to {Metric[0].Expression} when sorted in {Direction[0].Expression} order {Filter[A].Expression}."
+        ],
+        "general_question_templates": [
+            "How does a {EntityClass[A].Expression} rank according to {Metric[0].Expression}?"
+        ]
+    },
+    "InstanceGreaterThanAggregatedMetric": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "({Analysis[0]} |1|)",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)",
+            "|5|": "(retrieve_attribute |4| |2|)",
+            "|6|": "(retrieve_attribute |B| {Metric[0]})",
+            "|7|": "(greaterthan |6| |5|)",
+            "|8|": "(collect |7|)",
+            "|9|": "(return |8|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Result[0]} greater than {Reference[2].Expression}."
+        ],
+        "question_templates": [
+            "Is {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} greater than {Reference[2].Expression} {Filter[B].Expression}?",
+            "When comparing {Metric[0].Expression}, is {Identifier[0].Value[0].Expression} {Filter[A].Expression} greater than {Reference[2].Expression} {Filter[B].Expression}?",
+            "Does {Identifier[0].Value[0].Expression} have a higher {Metric[0].Expression} {Filter[A].Expression} than {Reference[2].Expression} {Filter[B].Expression}?"
+        ],
+        "general_question_templates": [
+            "Is the {Metric[0].Expression} for a {EntityClass[A].Expression} higher than {Reference[2].Expression}?"
+        ]
+    },
+    "InstanceLessThanAggregatedMetric": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "({Analysis[0]} |1|)",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)",
+            "|5|": "(retrieve_attribute |4| |2|)",
+            "|6|": "(retrieve_attribute |B| {Metric[0]})",
+            "|7|": "(lessthan |6| |5|)",
+            "|8|": "(collect |7|)",
+            "|9|": "(return |8|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Result[0]} less than {Reference[2].Expression}."
+        ],
+        "question_templates": [
+            "Is {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} less than {Reference[2].Expression} {Filter[B].Expression}?",
+            "When comparing {Metric[0].Expression}, is {Identifier[0].Value[0].Expression} {Filter[A].Expression} less than {Reference[2].Expression} {Filter[B].Expression}?",
+            "Does {Identifier[0].Value[0].Expression} have a lower {Metric[0].Expression} {Filter[A].Expression} than {Reference[2].Expression} {Filter[B].Expression}?"
+        ],
+        "general_question_templates": [
+            "Is the {Metric[0].Expression} for a {EntityClass[A].Expression} less than {Reference[2].Expression}?"
+        ]
+    },
+    "AggregateMetric": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "({Analysis[0]} |1|)",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "{Reference[2].Expression} {Filter[A].Expression} is {Result[0]} {Result[0].Unit}."
+        ],
+        "question_templates": [
+            "What is {Reference[2].Expression} {Filter[A].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the {Reference[2].Expression} for all {EntityClass[A].Expression}?"
+        ]
+    },
+    "InstanceDistanceFromMax": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(max |1|)",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)",
+            "|5|": "(retrieve_attribute |4| |2|)",
+            "|6|": "(retrieve_attribute |B| {Metric[0]})",
+            "|7|": "(subtract |5| |6|)",
+            "|8|": "(collect |7|)",
+            "|9|": "(return |8|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The {Metric[0].Expression} of {Identifier[0].Value[0].Expression} is {Result[0]} {Result[0].Unit} lower than that of the highest {EntityClass[A].Expression}."
+        ],
+        "question_templates": [
+            "How much smaller is the {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[B].Expression} than the largest {EntityClass[A].Expression} {Filter[A].Expression}?",
+            "What is the difference between {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[B].Expression} and the {EntityClass[A].Expression} with the highest {Metric[0].Expression} {Filter[A].Expression}?",
+            "Can you quantify the difference between {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[B].Expression} and the {EntityClass[A].Expression} with the highest {Metric[0].Expression} {Filter[A].Expression}?"
+        ],
+        "general_question_templates": [
+            "How much smaller is a {EntityClass[A].Expression} than the largest {EntityClass[A].Expression} according to {Metric[0].Expression}?"
+        ]
+    },
+    "InstanceDistanceFromMin": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(min |1|)",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)",
+            "|5|": "(retrieve_attribute |4| |2|)",
+            "|6|": "(retrieve_attribute |B| {Metric[0]})",
+            "|7|": "(subtract |5| |6|)",
+            "|8|": "(collect |7|)",
+            "|9|": "(return |8|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "When ranked by {Metric[0].Expression}, {Identifier[0].Value[0].Expression} is {Result[0]} {Result[0].Unit} from the lowest."
+        ],
+        "question_templates": [
+            "How much larger is the {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[B].Expression} than the smallest {EntityClass[A].Expression} {Filter[A].Expression}?",
+            "What is the difference between {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[B].Expression} and the {EntityClass[A].Expression} with the lowest {Metric[0].Expression} {Filter[A].Expression}?",
+            "Can you quantify the difference between {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[B].Expression} and the {EntityClass[A].Expression} with the lowest {Metric[0].Expression} {Filter[A].Expression}?"
+        ],
+        "general_question_templates": [
+            "How much larger is a {EntityClass[A].Expression} than the smallest {EntityClass[A].Expression} according to {Metric[0].Expression}?"
+        ]
+    },
+    "EntityCount": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Identifier"
+                ],
+                "associated_slots": [
+                    "{Identifier[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Identifier[0]})",
+            "|2|": "(count |1|)",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)"
+        },
+        "description": "Count the number of instances of a particular type of entity.",
+        "statement_templates": [
+            "There are {Result[0]} {Result[0].Unit} in total."
+        ],
+        "question_templates": [
+            "How many {EntityClass[A].Expression} are there {Filter[A].Expression}?",
+            "What is the total number of {EntityClass[A].Expression} {Filter[A].Expression}?",
+            "In total, how many {EntityClass[A].Expression} are there {Filter[A].Expression}?"
+        ],
+        "general_question_templates": [
+            "How many {EntityClass[A].Expression} are there?"
+        ]
+    },
+    "InstanceMetricValue": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(collect |1|)",
+            "|3|": "(return |2|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} is {Result[1]} {Result[1].Unit}."
+        ],
+        "question_templates": [
+            "What is {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression}?",
+            "For {Identifier[0].Value[0].Expression}, what is {Metric[0].Expression} {Filter[A].Expression}?",
+            "Can you tell me the {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the {Metric[0].Expression} for a single {EntityClass[A].Expression}?"
+        ]
+    },
+    "InstanceDistanceFromQuantity": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(subtract |1| {Metric[0].Value[0]})",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The distance between {Identifier[0].Value[0]} and {Metric[0].Value[0]} is {Result[0]} {Result[0].Unit}."
+        ],
+        "question_templates": [
+            "What is the distance between {Identifier[0].Value[0].Expression} and {Metric[0].Value[0]} for {Metric[0].Expression} {Filter[A].Expression}?",
+            "How far away is {Identifier[0].Value[0].Expression} from {Metric[0].Value[0]} for {Metric[0].Expression} {Filter[A].Expression}?",
+            "For {Metric[0].Expression} {Filter[A].Expression}, how far from {Metric[0].Value[0]} is {Identifier[0].Value[0].Expression}?"
+        ],
+        "general_question_templates": [
+            "How far from a specific quantity is a single {EntityClass[A].Expression} according to {Metric[0].Expression}?"
+        ]
+    },
+    "InstanceGreaterThanQuantity": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(greaterthan |1| {Metric[0].Value[0]})",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Result[0]} greater than the goal of {Metric[0].Value[0]}."
+        ],
+        "question_templates": [
+            "Is {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} greater than {Metric[0].Value[0]} {Metric[0].Value[0].Unit}?",
+            "Does the {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} exceed {Metric[0].Value[0]} {Metric[0].Value[0].Unit}?",
+            "Please tell me if the {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} is greater than {Metric[0].Value[0]} {Metric[0].Value[0].Unit}."
+        ],
+        "general_question_templates": [
+            "Is the {Metric[0].Expression} for a {EntityClass[A].Expression} greater than a specific quantity?"
+        ]
+    },
+    "InstanceLessThanQuantity": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(lessthan |1| {Metric[0].Value[0]})",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Result[0]} less than the goal of {Metric[0].Value[0]}."
+        ],
+        "question_templates": [
+            "Is {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} less than {Metric[0].Value[0]} {Metric[0].Value[0].Unit}?",
+            "Does the {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} fall below {Metric[0].Value[0]} {Metric[0].Value[0].Unit}?",
+            "Please tell me if the {Metric[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} is less than {Metric[0].Value[0]} {Metric[0].Value[0].Unit}."
+        ],
+        "general_question_templates": [
+            "Is the {Metric[0].Expression} for a {EntityClass[A].Expression} smaller than a specific quantity?"
+        ]
+    },
+    "InstancePercentChangeOverTime": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {
+                    "|0|": "(retrieve_entity {EntityClass[A]})",
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[0]}\")",
+                    "|4|": "(retrieve_attribute |0| {Identifier[0]})",
+                    "|5|": "(exact |4| \"{Identifier[0].Value[0]}\")",
+                    "|6|": "(and |5| |3|)"
+                },
+                "symmetric_filter_with": [
+                    "|B|"
+                ]
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {
+                    "|0|": "(retrieve_entity {EntityClass[A]})",
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[1]}\")",
+                    "|4|": "(retrieve_attribute |0| {Identifier[0]})",
+                    "|5|": "(exact |4| \"{Identifier[0].Value[0]}\")",
+                    "|6|": "(and |5| |3|)"
+                },
+                "symmetric_filter_with": [
+                    "|A|"
+                ]
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(retrieve_attribute |B| {Metric[0]})",
+            "|3|": "(percent_change |1| |2|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "Calculate the percent change of an entity's metric between two time periods.",
+        "statement_templates": [
+            "The percent change of {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression} is {Result[0]}%."
+        ],
+        "question_templates": [
+            "What is the percent change of {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the percent change of {Metric[0].Expression} for a specific {EntityClass[A].Expression} between two specific dates?"
+        ]
+    },
+    "AggregatePercentChangeOverTime": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": [
+                    "|B|"
+                ]
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[1]}\")"
+                },
+                "symmetric_filter_with": [
+                    "|A|"
+                ]
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(retrieve_attribute |B| {Metric[0]})",
+            "|3|": "({Analysis[0]} |1|)",
+            "|4|": "({Analysis[0]} |2|)",
+            "|5|": "(percent_change |3| |4|)",
+            "|6|": "(collect |5|)",
+            "|7|": "(return |6|)"
+        },
+        "description": "Calculate the percent change of an entity's metric between two time periods.",
+        "statement_templates": [
+            "The percent change of {Metric[0].Expression} for all {EntityClass[A].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression} {Filter[A].Expression} is {Result[0]}%."
+        ],
+        "question_templates": [
+            "What is the percent change of {Analysis[0].Expression} {Metric[0].Expression} for all {EntityClass[A].Expression} {Filter[A].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the percent change of {Analysis[0].Expression} {Metric[0].Expression} for all {EntityClass[A].Expression} between two specific dates?"
+        ]
+    },
+    "InstancePercentChangeOverTimeGreaterThanAggregatePercentChangeOverTime": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {
+                    "|0|": "(retrieve_entity {EntityClass[A]})",
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[0]}\")",
+                    "|4|": "(retrieve_attribute |0| {Identifier[0]})",
+                    "|5|": "(exact |4| \"{Identifier[0].Value[0]}\")",
+                    "|6|": "(and |5| |3|)"
+                },
+                "symmetric_filter_with": [
+                    "|B|"
+                ]
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {
+                    "|0|": "(retrieve_entity {EntityClass[A]})",
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[1]}\")",
+                    "|4|": "(retrieve_attribute |0| {Identifier[0]})",
+                    "|5|": "(exact |4| \"{Identifier[0].Value[0]}\")",
+                    "|6|": "(and |5| |3|)"
+                },
+                "symmetric_filter_with": [
+                    "|A|"
+                ]
+            },
+            "|C|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": [
+                    "|D|"
+                ]
+            },
+            "|D|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[1]}\")"
+                },
+                "symmetric_filter_with": [
+                    "|C|"
+                ]
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(retrieve_attribute |B| {Metric[0]})",
+            "|3|": "(percent_change |1| |2|)",
+            "|4|": "(abs |3|)",
+            "|6|": "(collect |4|)",
+            "|7|": "(return |6|)",
+            "|8|": "(retrieve_attribute |C| {Metric[0]})",
+            "|9|": "(retrieve_attribute |D| {Metric[0]})",
+            "|10|": "({Analysis[0]} |8|)",
+            "|11|": "({Analysis[0]} |9|)",
+            "|12|": "(percent_change |10| |11|)",
+            "|13|": "(abs |12|)",
+            "|15|": "(collect |13|)",
+            "|16|": "(return |15|)",
+            "|17|": "(retrieve_attribute |7| |4|)",
+            "|18|": "(retrieve_attribute |16| |13|)",
+            "|19|": "(greaterthan |17| |18|)",
+            "|20|": "(collect |19|)",
+            "|21|": "(return |20|)"
+        },
+        "description": "Determine if the magnitude of percent change of an entity's metric between two time periods is greater than the aggregated change of the metric for all entities between two time periods.",
+        "statement_templates": [
+            "The percent change of {Metric[0].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} {Result[0]} greater than for all other {EntityClass[A].Expression} {Filter[C].Expression}."
+        ],
+        "question_templates": [
+            "Is the percent change of {Metric[0].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} greater than the {Analysis[0].Expression} for all other {EntityClass[A].Expression} {Filter[C].Expression}?"
+        ],
+        "general_question_templates": [
+            "Is the percent change of {Metric[0].Expression} between two specific dates for a specific {EntityClass[A].Expression} greater than the {Analysis[0].Expression} for all other {EntityClass[A].Expression}?"
+        ]
+    },
+    "MetricRange": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(min |1|)",
+            "|3|": "(max |1|)",
+            "|4|": "(collect |2| |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "{Metric[0].Expression} {Filter[A].Expression} ranges from {Result[0]} {Result[0].Unit} at the low end to {Result[1]} {Result[1].Unit} at the high end."
+        ],
+        "question_templates": [
+            "What is the range of values for {Metric[0].Expression} {Filter[A].Expression}?",
+            "Could you specify the range for {Metric[0].Expression} {Filter[A].Expression}?",
+            "What are the lowest and highest {Metric[0].Expression} {Filter[A].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the range of values for {Metric[0].Expression} for all {EntityClass[A].Expression}?"
+        ]
+    },
+    "MetricDifferenceTwoInstances": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[1]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(retrieve_attribute |B| {Metric[0]})",
+            "|3|": "(subtract |2| |1|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The difference in {Metric[0].Expression} between {Identifier[0].Value[0].Expression} {Filter[A].Expression} and {Identifier[0].Value[1].Expression} {Filter[B].Expression} is {Result[0]} {Result[0].Unit}."
+        ],
+        "question_templates": [
+            "How much larger is the {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[A].Expression} than {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+            "What is the difference in terms of {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} and the {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+            "Can you quantify the difference in terms of {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} and {Identifier[0].Value[1].Expression} {Filter[B].Expression}?"
+        ],
+        "general_question_templates": [
+            "How much larger is one {EntityClass[A].Expression} than another according to {Metric[0].Expression}?"
+        ]
+    },
+    "IsInstanceMetricGreaterThanOther": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[1]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(retrieve_attribute |B| {Metric[0]})",
+            "|3|": "(greaterthan |2| |1|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} is {Result[0]} {Identifier[0].Value[1].Expression} {Filter[B].Expression}."
+        ],
+        "question_templates": [
+            "Is the {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[A].Expression} greater than {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+            "Is the {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} higher than {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+            "Can you tell me if {Metric[0].Expression} is greater for {Identifier[0].Value[0].Expression} {Filter[A].Expression} than {Identifier[0].Value[1].Expression} {Filter[B].Expression}?"
+        ],
+        "general_question_templates": [
+            "Is the {Metric[0].Expression} for one {EntityClass[A].Expression} higher than another {EntityClass[A].Expression}?"
+        ]
+    },
+    "IsInstanceMetricLessThanOther": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Metric"
+                ],
+                "associated_slots": [
+                    "{Metric[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[1]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Metric[0]})",
+            "|2|": "(retrieve_attribute |B| {Metric[0]})",
+            "|3|": "(lessthan |2| |1|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} is {Result[0]} {Identifier[0].Value[1].Expression} {Filter[B].Expression}."
+        ],
+        "question_templates": [
+            "Is the {Metric[0].Expression} of {Identifier[0].Value[0].Expression} {Filter[A].Expression} less than {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+            "Is the {Metric[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} lower than {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+            "Can you tell me if the {Metric[0].Expression} is lower for {Identifier[0].Value[0].Expression} {Filter[A].Expression} than {Identifier[0].Value[1].Expression} {Filter[B].Expression}?"
+        ],
+        "general_question_templates": [
+            "Is the {Metric[0].Expression} for one {EntityClass[A].Expression} lower than another {EntityClass[A].Expression}?"
+        ]
+    },
+    "MostCommonCategory": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Categorical"
+                ],
+                "associated_slots": [
+                    "{Categorical[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Categorical[0]})",
+            "|2|": "(retrieve_attribute |A| {Identifier[0]})",
+            "|3|": "(groupby |1|)",
+            "|4|": "(count_unique |2| |3|)",
+            "|5|": "(sort |4| desc)",
+            "|6|": "(limit 1)",
+            "|7|": "(collect |1| |4|)",
+            "|8|": "(return |7| |5| |6|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The most common {Categorical[0].Expression} {Filter[A].Expression} is {Result[0]} with {Result[1]} occurrences."
+        ],
+        "question_templates": [
+            "What is the most common {Categorical[0].Expression} {Filter[A].Expression}?",
+            "What is the most frequent {Categorical[0].Expression} {Filter[A].Expression}?",
+            "What is the mode of {Categorical[0].Expression} {Filter[A].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the most common {Categorical[0].Expression}?"
+        ]
+    },
+    "RarestCategory": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Categorical"
+                ],
+                "associated_slots": [
+                    "{Categorical[0]}",
+                    "{Identifier[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Categorical[0]})",
+            "|2|": "(retrieve_attribute |A| {Identifier[0]})",
+            "|3|": "(groupby |1|)",
+            "|4|": "(count_unique |2| |3|)",
+            "|5|": "(sort |4| asc)",
+            "|6|": "(limit 1)",
+            "|7|": "(collect |1| |4|)",
+            "|8|": "(return |7| |5| |6|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The rarest {Categorical[0].Expression} {Filter[A].Expression} is {Result[0]} with {Result[1]} occurrences.",
+            "The least common {Categorical[0].Expression} {Filter[A].Expression} is {Result[0]} with {Result[1]} occurrences."
+        ],
+        "question_templates": [
+            "What is the least common {Categorical[0].Expression} {Filter[A].Expression}?",
+            "What is the least frequent {Categorical[0].Expression} {Filter[A].Expression}?",
+            "What is the rarest {Categorical[0].Expression} {Filter[A].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the rarest {Categorical[0].Expression}?"
+        ]
+    },
+    "PearsonCorrelationBetweenTwoVariables": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[1]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Arithmetic[0]})",
+            "|2|": "(retrieve_attribute |B| {Arithmetic[1]})",
+            "|3|": "(correlation |1| |2|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "The Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[A].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} is {Result[0]}."
+        ],
+        "question_templates": [
+            "What is the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[A].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the Pearson correlation coefficient between two variables?"
+        ]
+    },
+    "IsPearsonCorrelationBetweenTwoVariablesPositive": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[1]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Arithmetic[0]})",
+            "|2|": "(retrieve_attribute |B| {Arithmetic[1]})",
+            "|3|": "(correlation |1| |2|)",
+            "|4|": "(greaterthan |3| 0.0)",
+            "|5|": "(collect |4|)",
+            "|6|": "(return |5|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "It is {Result[0]} that the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[A].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} is positive."
+        ],
+        "question_templates": [
+            "Is the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[A].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} positive?"
+        ],
+        "general_question_templates": [
+            "Is the Pearson correlation coefficient between two variables positive?"
+        ]
+    },
+    "IsPearsonCorrelationBetweenTwoVariablesNegative": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[1]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Arithmetic[0]})",
+            "|2|": "(retrieve_attribute |B| {Arithmetic[1]})",
+            "|3|": "(correlation |1| |2|)",
+            "|4|": "(lessthan |3| 0.0)",
+            "|5|": "(collect |4|)",
+            "|6|": "(return |5|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "It is {Result[0]} that the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[B].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} is negative."
+        ],
+        "question_templates": [
+            "Is the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[B].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} negative?"
+        ],
+        "general_question_templates": [
+            "Is the Pearson correlation coefficient between two variables negative?"
+        ]
+    },
+    "IsPearsonCorrelationBetweenTwoVariablesGreaterThanQuantity": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[1]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Arithmetic[0]})",
+            "|2|": "(retrieve_attribute |B| {Arithmetic[1]})",
+            "|3|": "(correlation |1| |2|)",
+            "|4|": "(greaterthan |3| {Quantity[0]})",
+            "|5|": "(collect |4|)",
+            "|6|": "(return |5|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "It is {Result[0]} that the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[A].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} is greater than {Quantity[0]}."
+        ],
+        "question_templates": [
+            "Is the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[A].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} greater than {Quantity[0]}?"
+        ],
+        "general_question_templates": [
+            "Is the Pearson correlation coefficient between two variables greater than a specific quantity?"
+        ]
+    },
+    "IsPearsonCorrelationBetweenTwoVariablesLessThanQuantity": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[1]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Arithmetic[0]})",
+            "|2|": "(retrieve_attribute |B| {Arithmetic[1]})",
+            "|3|": "(correlation |1| |2|)",
+            "|4|": "(lessthan |3| {Quantity[0]})",
+            "|5|": "(collect |4|)",
+            "|6|": "(return |5|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "It is {Result[0]} that the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[A].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} is less than {Quantity[0]}."
+        ],
+        "question_templates": [
+            "Is the Pearson correlation coefficient between {Arithmetic[0].Expression} {Filter[A].Expression} and {Arithmetic[1].Expression} {Filter[B].Expression} less than {Quantity[0]}?"
+        ],
+        "general_question_templates": [
+            "Is the Pearson correlation coefficient between two variables less than a specific quantity?"
+        ]
+    },
+    "WhenWasAttributeHighestEntityClass": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Arithmetic[0]})",
+            "|2|": "(max |1|)",
+            "|3|": "(collect |2|)",
+            "|4|": "(return |3|)",
+            "|5|": "(retrieve_entity {EntityClass[A]})",
+            "|6|": "(retrieve_attribute |5| {Datetime[0]})",
+            "|7|": "(retrieve_attribute |5| {Arithmetic[0]})",
+            "|8|": "(retrieve_attribute |4| |2|)",
+            "|9|": "(exact |7| |8|)",
+            "|10|": "(collect |6| |7|)",
+            "|11|": "(return |10| |9|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "{Arithmetic[0].Expression} {Filter[A].Expression} was highest in {Result[0]}."
+        ],
+        "question_templates": [
+            "When was the value of {Arithmetic[0].Expression} {Filter[A].Expression} highest?",
+            "When was the value of {Arithmetic[0].Expression} {Filter[A].Expression} at its peak?",
+            "At what point in time was {Arithmetic[0].Expression} {Filter[A].Expression} highest?"
+        ],
+        "general_question_templates": [
+            "When was a specific attribute's value highest?"
+        ]
+    },
+    "TimeElapsed": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Datetime"
+                ],
+                "associated_slots": [
+                    "{Datetime[0]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": [
+                    "|A|"
+                ]
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Datetime"
+                ],
+                "associated_slots": [
+                    "{Datetime[1]}"
+                ],
+                "filter": {},
+                "symmetric_filter_with": [
+                    "|B|"
+                ]
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Datetime[0]})",
+            "|2|": "(retrieve_attribute |B| {Datetime[1]})",
+            "|3|": "(subtract |1| |2|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "{Result[0]} days have elapsed between {Datetime[0].Expression} and {Datetime[1].Expression} {Filter[A].Expression}."
+        ],
+        "question_templates": [
+            "How many days elapsed between {Datetime[0].Expression} and {Datetime[1].Expression} {Filter[A].Expression}?"
+        ],
+        "general_question_templates": [
+            "How many days has elapsed between two points in time?"
+        ]
+    },
+    "DidInstanceOccurBeforeOtherInstance": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Datetime"
+                ],
+                "associated_slots": [
+                    "{Datetime[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Datetime"
+                ],
+                "associated_slots": [
+                    "{Datetime[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[1]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Datetime[0]})",
+            "|2|": "(retrieve_attribute |B| {Datetime[0]})",
+            "|3|": "(lessthan |1| |2|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "It {Result[0]} true that {Identifier[0].Value[0].Expression} {Filter[A].Expression} occurred before {Identifier[0].Value[1].Expression} {Filter[B].Expression}."
+        ],
+        "question_templates": [
+            "Is the {Datetime[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} earlier than the {Datetime[0].Expression} for {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+            "Did {Identifier[0].Value[0].Expression} {Filter[A].Expression} occur before {Identifier[0].Value[1].Expression} {Filter[B].Expression}?"
+        ],
+        "general_question_templates": [
+            "Did one {EntityClass[A]} occur before a different {EntityClass[A}}?"
+        ]
+    },
+    "DidInstanceOccurAfterOtherInstance": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Datetime"
+                ],
+                "associated_slots": [
+                    "{Datetime[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[0]}\")"
+                },
+                "symmetric_filter_with": []
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Datetime"
+                ],
+                "associated_slots": [
+                    "{Datetime[0]}"
+                ],
+                "filter": {
+                    "|1|": "(retrieve_entity {EntityClass[B]})",
+                    "|2|": "(retrieve_attribute |1| {Identifier[0]})",
+                    "|3|": "(exact |2| \"{Identifier[0].Value[1]}\")"
+                },
+                "symmetric_filter_with": []
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Datetime[0]})",
+            "|2|": "(retrieve_attribute |B| {Datetime[0]})",
+            "|3|": "(greaterthan |1| |2|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "",
+        "statement_templates": [
+            "It {Result[0]} true that {Identifier[0].Value[0].Expression} {Filter[A].Expression} occurred after {Identifier[0].Value[1].Expression} {Filter[B].Expression}."
+        ],
+        "question_templates": [
+            "Is the {Datetime[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} after the {Datetime[0].Expression} for {Identifier[0].Value[1].Expression} {Filter[B].Expression}?",
+            "Did {Identifier[0].Value[0].Expression} {Filter[A].Expression} occur after {Identifier[0].Value[1].Expression} {Filter[B].Expression}?"
+        ],
+        "general_question_templates": [
+            "Did one {EntityClass[A]} occur after a different {EntityClass[A}}?"
+        ]
+    },
+    "InstanceRawChangeOverTime": {
+        "input": {
+            "|A|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[0]}"
+                ],
+                "filter": {
+                    "|0|": "(retrieve_entity {EntityClass[A]})",
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[0]}\")",
+                    "|4|": "(retrieve_attribute |0| {Identifier[0]})",
+                    "|5|": "(exact |4| \"{Identifier[0].Value[0]}\")",
+                    "|6|": "(and |5| |3|)"
+                },
+                "symmetric_filter_with": [
+                    "|B|"
+                ]
+            },
+            "|B|": {
+                "attribute_type": [
+                    "Arithmetic"
+                ],
+                "associated_slots": [
+                    "{Arithmetic[0]}"
+                ],
+                "filter": {
+                    "|0|": "(retrieve_entity {EntityClass[A]})",
+                    "|1|": "(retrieve_entity {RelatedEntityClass[A]})",
+                    "|2|": "(retrieve_attribute |1| {Datetime[0]})",
+                    "|3|": "(exact |2| \"{Datetime[0].Value[1]}\")",
+                    "|4|": "(retrieve_attribute |0| {Identifier[0]})",
+                    "|5|": "(exact |4| \"{Identifier[0].Value[0]}\")",
+                    "|6|": "(and |5| |3|)"
+                },
+                "symmetric_filter_with": [
+                    "|B|"
+                ]
+            }
+        },
+        "analysis_template": {
+            "|1|": "(retrieve_attribute |A| {Arithmetic[0]})",
+            "|2|": "(retrieve_attribute |B| {Arithmetic[0]})",
+            "|3|": "(subtract |1| |2|)",
+            "|4|": "(collect |3|)",
+            "|5|": "(return |4|)"
+        },
+        "description": "Calculate the raw change of an entity's metric between two time periods.",
+        "statement_templates": [
+            "The raw change of {Arithmetic[0].Expression} for {Identifier[0].Value[0].Expression} {Filter[A].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression} is {Result[0]} {Result[0].Unit}."
+        ],
+        "question_templates": [
+            "What is the raw change of {Arithmetic[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression}?",
+            "What is the difference of {Arithmetic[0].Expression} {Filter[A].Expression} for {Identifier[0].Value[0].Expression} between {Datetime[0].Value[0].Expression} and {Datetime[0].Value[1].Expression}?"
+        ],
+        "general_question_templates": [
+            "What is the raw change of {Arithmetic[0].Expression} for a specific {EntityClass[A].Expression} between two specific dates?"
+        ]
+    }
+}
