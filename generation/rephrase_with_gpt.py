@@ -21,6 +21,7 @@ from tqdm import tqdm
 from wasabi import msg
 from openai import OpenAI
 
+
 class RephrasingMethod(Enum):
     SIMPLIFY = 1
     HIDE_DETAILS = 2
@@ -30,13 +31,13 @@ class RephrasingMethod(Enum):
     FEW_SHOT = 6
     PARAPHRASE = 7
 
+
 class PromptBuilder:
     def __init__(self):
         pass
 
     @staticmethod
-    def make_prompt(question: str,
-                    method: RephrasingMethod) -> str:
+    def make_prompt(question: str, method: RephrasingMethod) -> str:
         """
         Creates the prompt for a given question using the specified rephrasing method.
         Prompts taken from Table 6 in Saparina and Lapata 2024 (https://arxiv.org/pdf/2402.08666)
@@ -68,23 +69,30 @@ class PromptBuilder:
         elif method == RephrasingMethod.PARAPHRASE:
             return f"""Give me a paraphrase of the following question: {question}"""
         else:
-            raise ValueError(f"No prompt implemented for method: '{method.name}'")
+            raise ValueError(
+                f"No prompt implemented for method: '{method.name}'"
+            )
+
 
 # Define globals
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 OPENAI_CLIENT = OpenAI(api_key=OPENAI_API_KEY)
 GENERATION_ROOT_DIR = ""
 
-def generate_with_llm(prompt: str,
-                      temp: float = 0.0,
-                      max_tokens: int = 1024,
-                      response_format_type: str = 'text') -> str:
+
+def generate_with_llm(
+    prompt: str,
+    temp: float = 1.0,
+    max_tokens: int = 1024,
+    response_format_type: str = "text",
+) -> str:
     response = OPENAI_CLIENT.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-nano",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=max_tokens,
         temperature=temp,
-        response_format={"type": response_format_type})
+        response_format={"type": response_format_type},
+    )
 
     message_content = response.choices[0].message.content
 
@@ -93,30 +101,35 @@ def generate_with_llm(prompt: str,
 
     return message_content
 
-def rephrase_single_question(q: str,
-                             method: RephrasingMethod) -> str:
+
+def rephrase_single_question(q: str, method: RephrasingMethod) -> str:
     prompt = PromptBuilder.make_prompt(q, method)
-    output = generate_with_llm(prompt, temp=0.2)
+    output = generate_with_llm(prompt, temp=1.0)
     return output
 
-def rephrase_questions(input_file_path: str,
-                       output_file_path: str,
-                       rephrasing_methods: List[RephrasingMethod]):
+
+def rephrase_questions(
+    input_file_path: str,
+    output_file_path: str,
+    rephrasing_methods: List[RephrasingMethod],
+):
     # Read the json file containing the examples
     with open(input_file_path, encoding="utf-8") as f:
         data = json.load(f)
 
     # Rephrase the questions
     print(f"Beginning rephrasing for {input_file_path}")
-    for d in tqdm(data['data']):
+    for d in tqdm(data["data"]):
         rephrased_questions = []
-        for q in d['questions']:
+        for q in d["questions"]:
             for m in rephrasing_methods:
                 try:
                     rephrased_questions.append(rephrase_single_question(q, m))
                 except Exception as e:
                     print(f"Error when rephrasing the question '{q}'")
-        d['rephrased_questions'] = [{"question": rq, "similarity": None} for rq in rephrased_questions]
+        d["rephrased_questions"] = [
+            {"question": rq, "similarity": None} for rq in rephrased_questions
+        ]
 
     # Save the updated JSON dictionary with all the examples and the rephrased questions
     with open(output_file_path, "w", encoding="utf-8") as f:
@@ -124,23 +137,27 @@ def rephrase_questions(input_file_path: str,
 
     msg.good(f"Finished rephrasing for {input_file_path}")
 
+
 def get_json_files(directory: str):
     # List all files in the directory
     files = os.listdir(directory)
 
     # Filter the list to include only .json files
-    json_files = [f for f in files if f.endswith('.json')]
+    json_files = [f for f in files if f.endswith(".json")]
 
     return json_files
 
-def main(benchmark_directory: str,
-         simplify: bool,
-         hide_details: bool,
-         synonyms: bool,
-         substitutions: bool,
-         express_diff: bool,
-         few_shot: bool,
-         paraphrase: bool):
+
+def main(
+    benchmark_directory: str,
+    simplify: bool,
+    hide_details: bool,
+    synonyms: bool,
+    substitutions: bool,
+    express_diff: bool,
+    few_shot: bool,
+    paraphrase: bool,
+):
 
     # Determine the rephrasing methods to use
     rephrasing_methods_to_use = []
@@ -161,25 +178,29 @@ def main(benchmark_directory: str,
 
     # Ensure there is at least one rephrasing method specified to use
     if not rephrasing_methods_to_use:
-        raise ValueError("No rephrasing methods specified. Please specify at least one.")
+        raise ValueError(
+            "No rephrasing methods specified. Please specify at least one."
+        )
 
     INPUT_DIRS = {
         "train": os.path.join(benchmark_directory, "train"),
         "dev": os.path.join(benchmark_directory, "dev"),
-        "test": os.path.join(benchmark_directory, "test")
+        "test": os.path.join(benchmark_directory, "test"),
     }
 
     # Make the base directory to store all of the outputs
     ts = str(datetime.datetime.now()).replace(" ", "_")
     output_dir_name = f"rephrased_dataset_{ts}"
-    output_directory = os.path.join(GENERATION_ROOT_DIR, "generated_data", output_dir_name)
+    output_directory = os.path.join(
+        GENERATION_ROOT_DIR, "generated_data", output_dir_name
+    )
     os.mkdir(output_directory)
 
     # Determine the name of a new directory that will be generated the benchmark dataset
     OUTPUT_DIRS = {
         "train": os.path.join(output_directory, "train"),
         "dev": os.path.join(output_directory, "dev"),
-        "test": os.path.join(output_directory, "test")
+        "test": os.path.join(output_directory, "test"),
     }
 
     # Make sure the output directories exist
@@ -192,15 +213,28 @@ def main(benchmark_directory: str,
 
     # Rephrase the train set questions
     for file_name in train_files:
-        rephrase_questions(os.path.join(INPUT_DIRS["train"], file_name), os.path.join(OUTPUT_DIRS["train"], file_name), rephrasing_methods_to_use)
+        rephrase_questions(
+            os.path.join(INPUT_DIRS["train"], file_name),
+            os.path.join(OUTPUT_DIRS["train"], file_name),
+            rephrasing_methods_to_use,
+        )
 
     # Rephrase the dev set questions
     for file_name in dev_files:
-        rephrase_questions(os.path.join(INPUT_DIRS["dev"], file_name), os.path.join(OUTPUT_DIRS["dev"], file_name), rephrasing_methods_to_use)
+        rephrase_questions(
+            os.path.join(INPUT_DIRS["dev"], file_name),
+            os.path.join(OUTPUT_DIRS["dev"], file_name),
+            rephrasing_methods_to_use,
+        )
 
     # Rephrase the test set questions
     for file_name in test_files:
-        rephrase_questions(os.path.join(INPUT_DIRS["test"], file_name), os.path.join(OUTPUT_DIRS["test"], file_name), rephrasing_methods_to_use)
+        rephrase_questions(
+            os.path.join(INPUT_DIRS["test"], file_name),
+            os.path.join(OUTPUT_DIRS["test"], file_name),
+            rephrasing_methods_to_use,
+        )
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -217,11 +251,13 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    main(args.benchmark_directory,
-         args.simplify,
-         args.hide_details,
-         args.synonyms,
-         args.substitutions,
-         args.express_diff,
-         args.few_shot,
-         args.paraphrase)
+    main(
+        args.benchmark_directory,
+        args.simplify,
+        args.hide_details,
+        args.synonyms,
+        args.substitutions,
+        args.express_diff,
+        args.few_shot,
+        args.paraphrase,
+    )
